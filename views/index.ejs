@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>RUL Demo</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/font-awesome.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+    <script src="js/echarts.min.js"></script>
+
+</head>
+
+<body>
+    <div class="navbar navbar-inverse set-radius-zero">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">
+                    <h1 style="color: white;">RUL DEMO</h1>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- LOGO HEADER END-->
+
+    <div class="content-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4 class="page-head-line">Graph</h4>
+                </div>
+            </div>
+            <!-- GRAPH-->
+            <div>
+                <div id="main" style="width: 1000px;height:500px;"></div>
+                <button id="btn_reset" type="button" class="btn btn-primary btn-lg" οnclick="ResetData()">Reset</button>
+                <br><br><br>
+                <h2>Sensor</h2>
+                <hr>
+                <div style="display: flex;">
+                    <div id="sensor1" style="width: 400px;height:400px;"></div>
+                    <div id="sensor2" style="width: 400px;height:400px;"></div>
+                    <div id="sensor3" style="width: 400px;height:400px;"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    &copy; 2020 Test Project | By : ly</a>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var option = {
+            title: {
+                text: 'Remaining Useful Life (%)'
+            },
+            tooltip: {},
+            // legend: {
+            //     data:['rul']
+            // },
+            xAxis: {
+                data: []
+            },
+            yAxis: {
+
+            },
+            series: [{
+                name: 'rul',
+                type: 'bar',
+                smooth: true,
+                data: [],
+                animationDuration: 3000
+            }]
+        };
+        myChart.setOption(option);
+
+        setInterval(function () {
+            $.ajax({
+                url: "/getdata",
+                type: "get",
+                success: function (data) {
+                    // console.log(data)
+                    myChart.setOption({
+                        xAxis: {
+                            data: data.year
+                        },
+                        series: [{
+                            name: 'rul',
+                            data: data.rul
+                        }]
+                    });
+                }
+            })
+        }, 5000);
+
+        $(document).ready(function () {
+            $("button").click(function () {
+                $.ajax({
+                    url: "/resetdata",
+                    type: "get",
+                    success: function (data) {
+                        console.log(data)
+                    }
+                })
+            });
+        });
+
+
+        var sensor1 = echarts.init(document.getElementById('sensor1'));
+        var sensor2 = echarts.init(document.getElementById('sensor2'));
+        var sensor3 = echarts.init(document.getElementById('sensor3'));
+        var sensor1option = {
+            title: {
+                text: 'Latest Current (mA)'
+            },
+            toolbox: {
+                feature: {
+                    restore: {},
+                    saveAsImage: {}
+                },
+
+            },
+            series: [
+                {
+                    name: 'Current',
+                    type: 'gauge',
+                    detail: { formatter: '{value} mA' },
+                    data: [{ value: 0.66, name: 'Current' }],
+                    max: 2.0
+                }
+            ],
+        };
+
+        var sensor2option = {
+            title: {
+                text: 'Latest Voltage (V)'
+            },
+            toolbox: {
+                feature: {
+                    restore: {},
+                    saveAsImage: {}
+                },
+
+            },
+            series: [
+                {
+                    name: 'Voltage',
+                    type: 'gauge',
+                    detail: { formatter: '{value} V' },
+                    data: [{ value: 120, name: 'Voltage' }],
+                    max: 200
+                }
+            ],
+        };
+
+        var sensor3option = {
+            title: {
+                text: 'Latest Accelerometer'
+            },
+            toolbox: {
+                feature: {
+                    restore: {},
+                    saveAsImage: {}
+                },
+
+            },
+            series: [
+                {
+                    name: 'Voltage',
+                    type: 'gauge',
+                    data: [{ value: 0.0025, name: 'Accelerate' }],
+                    max: 0.01,
+                    splitNumber: 5,
+                },
+         
+            ],
+        };
+        sensor1.setOption(sensor1option);
+        sensor2.setOption(sensor2option);
+        sensor3.setOption(sensor3option);
+    </script>
+</body>
+
+</html>
