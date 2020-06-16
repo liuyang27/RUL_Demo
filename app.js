@@ -20,8 +20,9 @@ app.set("view engine","ejs");
 
 app.get ("/",                                      mainCtrl.showIndex);
 app.get ("/getdata",                               mainCtrl.getData);
-app.get ("/addnewdata",                               mainCtrl.AddData);
-app.get ("/resetdata",                               mainCtrl.ResetData);
+app.all ("/addnewdata",                            mainCtrl.addData);
+app.get ("/resetdata",                             mainCtrl.resetData);
+app.post("/sensordata",                            mainCtrl.sensorData);
 // app.post("/svr/model",                                      mainCtrl.doAddModel)
 // app.put("/svr/model/:mid",                                  mainCtrl.doEditModel)
 // app.delete("/svr/model/:mid",                               mainCtrl.doDeleteModel)

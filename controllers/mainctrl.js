@@ -7,6 +7,7 @@ let cp = require('child_process');
 
 
 var filePath = path.join(__dirname, '../public/data/RUL_Data.csv')
+
 var dataAdded = false;
 exports.showIndex = function (req, res) {
 	res.render("index.ejs");
@@ -45,9 +46,10 @@ exports.getData = async function (req, res) {
 	}
 }
 
-exports.AddData = function (req, res) {
+exports.addData = function (req, res) {
 	console.log("=========Add data==========")
 	if (!dataAdded) {
+		dataAdded = true;
 		callPython((data) => {
 			if (data != "") {
 				fs.open(filePath, 'a', (err, fd) => {
@@ -59,10 +61,10 @@ exports.AddData = function (req, res) {
 						if (err) throw err;
 					});
 				});
-				dataAdded = true;
 				console.log("new data added ok")
 				res.json({ "status": "new data added ok" });
 			} else {
+				dataAdded = false;
 				res.json({ "status": "python model error" });
 			}
 		})
@@ -95,7 +97,7 @@ function callPython(callback) {
 
 }
 
-exports.ResetData = function (req, res) {
+exports.resetData = function (req, res) {
 	console.log("=========Reset data==========")
 	fs.writeFile(filePath, "MOTORNAME,STARTDATE,NUMCYCLE,RUL\nMotor20,,2016,98.61\nMotor20,,2017,93.24\nMotor20,,2018,91.81\nMotor20,,2019,85.4\n", 'utf8', (err) => {
 		if (err) {
@@ -106,6 +108,11 @@ exports.ResetData = function (req, res) {
 	res.json({ "status": "data reset ok" });
 }
 
+exports.sensorData = function (req, res) {
+	console.log("=========Get sensor data==========")
+	console.log(req)
+	res.json({ "status": "data received" });
+}
 
 //**********************below not in use************************* */
 // function callPythonssh(callback) {
