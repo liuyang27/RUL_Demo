@@ -7,6 +7,7 @@ let cp = require('child_process');
 
 
 var filePath = path.join(__dirname, '../public/data/RUL_Data.csv')
+var filePath_sensor = path.join(__dirname, '../public/data/Sensor_Data.csv')
 
 var dataAdded = false;
 exports.showIndex = function (req, res) {
@@ -82,6 +83,7 @@ function callPython(callback) {
 	cp.exec('cd RUL_Prediction; python RUL_prediction.py', function(error, stdout, stderr){
 		if (error) {
 			console.error('error: ' + error);
+			callback("")
 			return;
 		}
 		console.log('stdout: ' + stdout);
@@ -109,9 +111,23 @@ exports.resetData = function (req, res) {
 }
 
 exports.sensorData = function (req, res) {
-	console.log("=========Get sensor data==========")
+	console.log("=========Add sensor data==========")
 	console.log(req)
-	res.json({ "status": "data received" });
+	fs.writeFile(filePath_sensor, "1,50,0.003", 'utf8', (err) => {
+		if (err) {
+			throw err;
+		}
+		res.json({ "status": "data received" });
+	});
+}
+exports.getSensorData = function(req, res){
+	console.log("=========Get sensor data==========")
+	fs.readFile(filePath_sensor,'utf8',(err, data) => {
+		if (err) throw err;
+		console.log(data)
+		res.json({ "results": data });
+	  });
+
 }
 
 //**********************below not in use************************* */

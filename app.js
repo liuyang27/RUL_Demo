@@ -22,12 +22,9 @@ app.get ("/",                                      mainCtrl.showIndex);
 app.get ("/getdata",                               mainCtrl.getData);
 app.all ("/addnewdata",                            mainCtrl.addData);
 app.get ("/resetdata",                             mainCtrl.resetData);
-app.post("/sensordata",                            mainCtrl.sensorData);
-// app.post("/svr/model",                                      mainCtrl.doAddModel)
-// app.put("/svr/model/:mid",                                  mainCtrl.doEditModel)
-// app.delete("/svr/model/:mid",                               mainCtrl.doDeleteModel)
-// app.get("/svr/model/:mid",                                  mainCtrl.getModelDetail)
-// app.get("/svr/model/edit/:mid",                             mainCtrl.getEditModelDetail)
+app.all("/sensordata",                             mainCtrl.sensorData);
+app.get("/getsensordata",                          mainCtrl.getSensorData);
+
 
 
 app.use(express.static("public"));

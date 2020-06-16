@@ -138,7 +138,7 @@
                     name: 'Current',
                     type: 'gauge',
                     detail: { formatter: '{value} mA' },
-                    data: [{ value: 0.66, name: 'Current' }],
+                    data: [{ value: 0, name: 'Current' }],
                     max: 2.0
                 }
             ],
@@ -160,7 +160,7 @@
                     name: 'Voltage',
                     type: 'gauge',
                     detail: { formatter: '{value} V' },
-                    data: [{ value: 120, name: 'Voltage' }],
+                    data: [{ value: 0, name: 'Voltage' }],
                     max: 200
                 }
             ],
@@ -181,7 +181,7 @@
                 {
                     name: 'Voltage',
                     type: 'gauge',
-                    data: [{ value: 0.0025, name: 'Accelerate' }],
+                    data: [{ value: 0, name: 'Current' }],
                     max: 0.01,
                     splitNumber: 5,
                 },
@@ -191,6 +191,33 @@
         sensor1.setOption(sensor1option);
         sensor2.setOption(sensor2option);
         sensor3.setOption(sensor3option);
+
+
+        setInterval(function () {
+            $.ajax({
+                url: "/getsensordata",
+                type: "get",
+                success: function (data) {
+                    // console.log(data)
+                    var result = data.results.split(',')
+                    sensor1.setOption({
+                        series: [{
+                            data: [{ value: result[0], name: 'Current' }],
+                        }]
+                    });
+                    sensor2.setOption({
+                        series: [{
+                            data: [{ value: result[1], name: 'Voltage' }],
+                        }]
+                    });
+                    sensor3.setOption({
+                        series: [{
+                            data: [{ value: result[2], name: 'Current' }],
+                        }]
+                    });
+                }
+            })
+        }, 2500);
     </script>
 </body>
 
