@@ -1,6 +1,6 @@
 var express=require("express");
 var cors = require('cors')
-// var bodyParser = require('body-parser')
+var bodyParser = require('body-parser')
 // var fs = require('fs');
 var mainCtrl =require("./controllers/mainctrl.js");
 
@@ -13,8 +13,8 @@ app.use(cors())
 
 app.set("view engine","ejs");
 
-// app.use(bodyParser.urlencoded({ extended: false }))
-// app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 
 
 

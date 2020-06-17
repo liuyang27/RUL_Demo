@@ -124,7 +124,7 @@
         var sensor3 = echarts.init(document.getElementById('sensor3'));
         var sensor1option = {
             title: {
-                text: 'Latest Current (mA)'
+                text: 'Latest Temperature (°C)'
             },
             toolbox: {
                 feature: {
@@ -135,18 +135,18 @@
             },
             series: [
                 {
-                    name: 'Current',
+                    name: 'Temperature',
                     type: 'gauge',
-                    detail: { formatter: '{value} mA' },
-                    data: [{ value: 0, name: 'Current' }],
-                    max: 2.0
+                    detail: { formatter: '{value} °C' },
+                    data: [{ value: 0, name: 'Temperature' }],
+                    max: 100
                 }
             ],
         };
 
         var sensor2option = {
             title: {
-                text: 'Latest Voltage (V)'
+                text: 'Latest Humidity (%)'
             },
             toolbox: {
                 feature: {
@@ -157,18 +157,18 @@
             },
             series: [
                 {
-                    name: 'Voltage',
+                    name: 'Humidity',
                     type: 'gauge',
-                    detail: { formatter: '{value} V' },
-                    data: [{ value: 0, name: 'Voltage' }],
-                    max: 200
+                    detail: { formatter: '{value} %' },
+                    data: [{ value: 0, name: 'Humidity' }],
+                    max: 100
                 }
             ],
         };
 
         var sensor3option = {
             title: {
-                text: 'Latest Accelerometer'
+                text: 'Latest Noise (mV)'
             },
             toolbox: {
                 feature: {
@@ -179,10 +179,11 @@
             },
             series: [
                 {
-                    name: 'Voltage',
+                    name: 'Noise',
                     type: 'gauge',
-                    data: [{ value: 0, name: 'Current' }],
-                    max: 0.01,
+                    detail: { formatter: '{value} mV' },
+                    data: [{ value: 0, name: 'Noise' }],
+                    max: 100,
                     splitNumber: 5,
                 },
          
@@ -202,17 +203,17 @@
                     var result = data.results.split(',')
                     sensor1.setOption({
                         series: [{
-                            data: [{ value: result[0], name: 'Current' }],
+                            data: [{ value: result[0], name: 'Temperature' }],
                         }]
                     });
                     sensor2.setOption({
                         series: [{
-                            data: [{ value: result[1], name: 'Voltage' }],
+                            data: [{ value: result[1], name: 'Humidity' }],
                         }]
                     });
                     sensor3.setOption({
                         series: [{
-                            data: [{ value: result[2], name: 'Current' }],
+                            data: [{ value: result[2], name: 'Noise' }],
                         }]
                     });
                 }

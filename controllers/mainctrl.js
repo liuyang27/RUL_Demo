@@ -112,12 +112,22 @@ exports.resetData = function (req, res) {
 
 exports.sensorData = function (req, res) {
 	console.log("=========Add sensor data==========")
-	console.log(req)
-	fs.writeFile(filePath_sensor, "1,50,0.003", 'utf8', (err) => {
+	var sensordata=req.body
+	console.log(sensordata)
+	var sensor1=sensordata["TEMP"]
+	var sensor2=sensordata["HUMIDITY"]
+	var sensor3=sensordata["NOISE"]
+	if(typeof(sensor1)== "undefined" || typeof(sensor2)== "undefined" || typeof(sensor3)== "undefined"){
+		res.json({ "status": "data error" });
+		return;
+	}
+	sensor1=(parseFloat(sensor1)/1000).toFixed(2)
+	sensordata=sensor1+","+sensor2+","+sensor3
+	fs.writeFile(filePath_sensor, sensordata, 'utf8', (err) => {
 		if (err) {
 			throw err;
 		}
-		res.json({ "status": "data received" });
+		res.json({ "status": "data received ok" });
 	});
 }
 exports.getSensorData = function(req, res){
